@@ -295,7 +295,7 @@ const BalancePage = () => {
 
       <div className="grid grid-cols-1 gap-5 mb-5 lg:grid-cols-2">
         {/* Spending trend */}
-        <div className="bg-card border border-border rounded-xl p-5 shadow-card">
+        <div className="bg-card border border-border rounded-xl p-5 shadow-card flex flex-col">
           <div className="flex items-center justify-between mb-4">
             <div className="text-sm font-semibold text-foreground">近 {trendDays} 天消费趋势</div>
             <div className="flex items-center gap-1 bg-background border border-border rounded-lg p-1">
@@ -314,11 +314,11 @@ const BalancePage = () => {
               ))}
             </div>
           </div>
-          <div style={{ height: 160 }}>
+          <div className="flex-1" style={{ minHeight: 160 }}>
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={chartData} margin={{ top: 5, right: 5, bottom: 0, left: -20 }}>
+              <BarChart data={chartData} margin={{ top: 5, right: 5, bottom: 4, left: -20 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" vertical={false} />
-                <XAxis dataKey="date" tick={{ fontSize: 11, fill: "var(--muted-foreground)" }} axisLine={false} tickLine={false} tickFormatter={(d: string) => { const parts = d.split("-"); return parts.length === 3 ? `${parts[1]}-${parts[2]}` : d; }} interval={trendDays <= 7 ? 0 : trendDays <= 14 ? 1 : 2} />
+                <XAxis dataKey="date" tick={{ fontSize: 11, fill: "var(--muted-foreground)" }} tickLine={false} tickFormatter={(d: string) => { const parts = d.split("-"); return parts.length === 3 ? `${parts[1]}-${parts[2]}` : d; }} interval={trendDays <= 7 ? 0 : trendDays <= 14 ? 1 : 2} />
                 <YAxis tick={{ fontSize: 11, fill: "var(--muted-foreground)" }} axisLine={false} tickLine={false} />
                 <Tooltip
                   contentStyle={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: "10px", fontSize: 12, boxShadow: "0 4px 6px -1px rgba(0,0,0,0.05)" }}
