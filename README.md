@@ -4,7 +4,7 @@
 
 🌐 官网: https://www.llmgateway.cn
 
-LLM Gateway 是一个统一的大模型 API 网关与商业化运营平台。它把 OpenAI、Anthropic、Google Gemini 等协议入口汇聚到同一套认证、路由、计费、订阅、租户和管理后台中，让 Claude Code、Codex CLI、Cursor、Windsurf、Aider 等主流 AI 编码工具用同一个网关地址和 API Key 即可访问已配置的全部模型。
+LLM Gateway 是一个统一的大模型 API 网关与商业化运营平台。它把 OpenAI、Anthropic、Google Gemini 等协议入口汇聚到同一套认证、路由、计费、订阅、租户和管理后台中，让 Claude Code、Codex CLI、Cursor、Trae、ZCode 等主流 AI 编码工具用同一个网关地址和 API Key 即可访问已配置的全部模型。
 
 项目由 Go 后端、React Web 控制台、Tauri 桌面端和 PostgreSQL 数据库组成。模型、上游、定价、套餐、租户、订单等业务数据由数据库驱动，YAML 配置只保留服务运行和第三方集成所需的基础参数。
 
@@ -96,7 +96,7 @@ docker compose up --build -d
 |---|---|---|
 | `GET /v1/models` | OpenAI 兼容模型列表 | 工具发现可用模型 |
 | `GET /v1/balance` | 网关扩展 | API Key 查询余额 |
-| `POST /v1/chat/completions` | OpenAI Chat Completions | Cursor、Windsurf、Aider、OpenAI SDK |
+| `POST /v1/chat/completions` | OpenAI Chat Completions | Cursor、Trae、ZCode、OpenAI SDK |
 | `POST /v1/responses` | OpenAI Responses | Codex CLI、Responses API 客户端 |
 | `POST /v1/messages` | Anthropic Messages | Claude Code、Anthropic SDK |
 | `POST /v1/messages/count_tokens` | Anthropic token 统计 | Claude 兼容工具 |

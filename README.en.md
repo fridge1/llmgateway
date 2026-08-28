@@ -4,7 +4,7 @@
 
 🌐 Website: https://www.llmgateway.cn
 
-LLM Gateway is a unified LLM API gateway and commercial platform. It consolidates OpenAI, Anthropic, and Google Gemini protocol endpoints behind a single authentication, routing, billing, subscription, tenant, and admin system — letting Claude Code, Codex CLI, Cursor, Windsurf, Aider, and other AI coding tools access all configured models through one gateway address and API key.
+LLM Gateway is a unified LLM API gateway and commercial platform. It consolidates OpenAI, Anthropic, and Google Gemini protocol endpoints behind a single authentication, routing, billing, subscription, tenant, and admin system — letting Claude Code, Codex CLI, Cursor, Trae, ZCode, and other AI coding tools access all configured models through one gateway address and API key.
 
 The project consists of a Go backend, a React web console, a Tauri desktop app, and a PostgreSQL database. Business data — models, upstreams, pricing, plans, tenants, orders — is database-driven, while YAML config only holds runtime and third-party integration parameters.
 
@@ -96,7 +96,7 @@ Required environment variables:
 |---|---|---|
 | `GET /v1/models` | OpenAI model list | Tool model discovery |
 | `GET /v1/balance` | Gateway extension | Query balance by API key |
-| `POST /v1/chat/completions` | OpenAI Chat Completions | Cursor, Windsurf, Aider, OpenAI SDK |
+| `POST /v1/chat/completions` | OpenAI Chat Completions | Cursor, Trae, ZCode, OpenAI SDK |
 | `POST /v1/responses` | OpenAI Responses | Codex CLI, Responses API clients |
 | `POST /v1/messages` | Anthropic Messages | Claude Code, Anthropic SDK |
 | `POST /v1/messages/count_tokens` | Anthropic token counting | Claude-compatible tools |
