@@ -193,4 +193,4 @@ curl http://localhost:9090/v1/models
 
 Licensed under the [PolyForm Noncommercial License 1.0.0](LICENSE).
 
-For personal study, research, and internal non-commercial use only. **Commercial use is prohibited**, including but not limited to selling, paid hosting, and SaaS resale. See the [LICENSE](LICENSE) file for details.
+For personal study, research, and internal non-commercial use only. **Commercial use is prohibited**, including but not limited to selling, paid hosting, and SaaS resale. If you wish to use this project for commercial purposes, please contact the author. WeChat: z799939750. See the [LICENSE](LICENSE) file for details.

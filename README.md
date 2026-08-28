@@ -193,4 +193,6 @@ curl http://localhost:9090/v1/models
 
 本项目采用 [PolyForm Noncommercial License 1.0.0](LICENSE) 授权。
 
-仅供个人学习、研究和内部非商业用途使用，**禁止任何形式的商业使用**，包括但不限于销售、付费托管、SaaS 转售等。详见 [LICENSE](LICENSE) 文件。
+仅供个人学习、研究和内部非商业用途使用，**禁止任何形式的商业使用**，包括但不限于销售、付费托管、SaaS 转售等。若想进行商业行为，请与作者联系。vx：z799939750
+
+详见 [LICENSE](LICENSE) 文件。
