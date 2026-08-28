@@ -22,8 +22,9 @@ const BalancePage = () => {
   const [payMessage, setPayMessage] = useState<string | null>(null);
 
   const balance = useBalance();
-  const stats = useBillingStats(7);
-  const txns = useTransactions(1, 50);
+  const [trendDays, setTrendDays] = useState(7);
+  const stats = useBillingStats(trendDays);
+  const rechargeTxns = useTransactions(1, 8, "recharge");
   const { data: ordersData } = useOrders(1, 10);
   const createPayment = useCreatePayment();
   const repayOrder = useRepayOrder();
@@ -46,7 +47,7 @@ const BalancePage = () => {
   const bonusAmount = user?.first_recharge_bonus_cny ?? 0;
   const bonusEligible = bonusAmount > 0 && !user?.first_recharge_bonus_granted;
 
-  const isLoading = balance.isLoading || stats.isLoading;
+  const isLoading = balance.isLoading || stats.isLoading || rechargeTxns.isLoading;
 
   const finalAmount = selectedAmount === -1
     ? (parseFloat(customAmount) || 0)
@@ -66,9 +67,7 @@ const BalancePage = () => {
     ? Math.floor(balanceVal / avgDailyCost)
     : "\u2014";
 
-  const rechargeRecords = (txns.data?.transactions ?? []).filter(
-    (t) => t.type === "recharge",
-  );
+  const rechargeRecords = rechargeTxns.data?.transactions ?? [];
 
   const pendingOrders = (ordersData?.orders ?? []).filter(
     (o) => o.status === "pending" && new Date(o.expired_at) > new Date()
@@ -298,13 +297,28 @@ const BalancePage = () => {
         {/* Spending trend */}
         <div className="bg-card border border-border rounded-xl p-5 shadow-card">
           <div className="flex items-center justify-between mb-4">
-            <div className="text-sm font-semibold text-foreground">近 7 天消费趋势</div>
+            <div className="text-sm font-semibold text-foreground">近 {trendDays} 天消费趋势</div>
+            <div className="flex items-center gap-1 bg-background border border-border rounded-lg p-1">
+              {[7, 14, 30].map((d) => (
+                <button
+                  key={d}
+                  onClick={() => setTrendDays(d)}
+                  className={`px-2.5 py-1 text-xs rounded-md transition-colors ${
+                    trendDays === d
+                      ? "bg-primary text-primary-foreground font-medium"
+                      : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                  }`}
+                >
+                  {d}天
+                </button>
+              ))}
+            </div>
           </div>
           <div style={{ height: 160 }}>
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={chartData} margin={{ top: 5, right: 5, bottom: 0, left: -20 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" vertical={false} />
-                <XAxis dataKey="date" tick={{ fontSize: 11, fill: "var(--muted-foreground)" }} axisLine={false} tickLine={false} />
+                <XAxis dataKey="date" tick={{ fontSize: 11, fill: "var(--muted-foreground)" }} axisLine={false} tickLine={false} tickFormatter={(d: string) => { const parts = d.split("-"); return parts.length === 3 ? `${parts[1]}-${parts[2]}` : d; }} interval={trendDays <= 7 ? 0 : trendDays <= 14 ? 1 : 2} />
                 <YAxis tick={{ fontSize: 11, fill: "var(--muted-foreground)" }} axisLine={false} tickLine={false} />
                 <Tooltip
                   contentStyle={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: "10px", fontSize: 12, boxShadow: "0 4px 6px -1px rgba(0,0,0,0.05)" }}
@@ -321,7 +335,7 @@ const BalancePage = () => {
           <div className="px-5 py-4 border-b border-border">
             <div className="text-sm font-semibold text-foreground">最近充值记录</div>
           </div>
-          {txns.isLoading ? (
+          {rechargeTxns.isLoading ? (
             <div className="flex items-center justify-center py-12">
               <Loader2 size={20} className="animate-spin text-primary" />
             </div>
