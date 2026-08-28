@@ -14,7 +14,7 @@ const LandingFooter = () => {
             <span className="font-bold text-foreground">LLM Gateway</span>
           </div>
           <p className="text-sm text-muted-foreground leading-relaxed max-w-md">
-            统一的大模型 API 网关，一个账号接入 OpenAI、Anthropic、Gemini 等主流模型。
+            统一的大模型 API 网关，一个账号接入国内外主流大模型。
             原生协议透传，按量计费，支持团队与企业账户。
           </p>
         </div>

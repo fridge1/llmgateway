@@ -42,7 +42,7 @@ const FEATURES: Feature[] = [
   {
     icon: <Layers size={22} className="text-white" />,
     title: "一个 Key 调用所有模型",
-    desc: "OpenAI / Anthropic / Gemini 协议互转，一次接入即可调用 Claude、GPT、Gemini 等所有已配置模型。",
+    desc: "OpenAI / Anthropic / Gemini 协议互转，一次接入即可调用国内外所有已配置模型。",
     color: "from-indigo-500 to-purple-500",
   },
 ];

@@ -8,6 +8,11 @@ const PROVIDER_LABEL: Record<string, string> = {
   anthropic: "Anthropic",
   google: "Google",
   gemini: "Google",
+  volcengine: "火山引擎",
+  deepseek: "DeepSeek",
+  dashscope: "阿里百炼",
+  siliconflow: "SiliconFlow",
+  xai: "xAI",
   other: "其他",
 };
 
@@ -16,6 +21,11 @@ const PROVIDER_COLOR: Record<string, string> = {
   anthropic: "from-orange-500 to-amber-500",
   google: "from-blue-500 to-indigo-500",
   gemini: "from-blue-500 to-indigo-500",
+  volcengine: "from-rose-500 to-red-500",
+  deepseek: "from-blue-500 to-indigo-500",
+  dashscope: "from-amber-500 to-orange-500",
+  siliconflow: "from-purple-500 to-fuchsia-500",
+  xai: "from-slate-600 to-slate-700",
   other: "from-slate-500 to-slate-600",
 };
 
@@ -34,7 +44,7 @@ const ModelMatrix = () => {
             一个网关，多家模型
           </h2>
           <p className="text-muted-foreground">
-            统一协议接入，按需切换，无需重写客户端代码
+            国内外主流模型统一接入，按需切换，无需重写客户端代码
           </p>
         </div>
 
@@ -55,7 +65,7 @@ const ModelMatrix = () => {
           <p className="text-center text-muted-foreground">暂无可用模型</p>
         ) : (
           <>
-            <div className="flex flex-wrap justify-center gap-2 mb-8">
+            <div className="flex flex-wrap justify-center gap-2 mb-8 max-w-full overflow-x-auto">
               {providers.map((p, idx) => (
                 <button
                   key={p.provider}

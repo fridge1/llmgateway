@@ -177,19 +177,19 @@ const AuthPage = () => {
 
         {/* Hero text */}
         <div className="relative z-10 mb-12">
-          <h1 className="text-4xl font-extrabold text-white leading-tight mb-2">国内用 Claude</h1>
-          <h1 className="text-4xl font-extrabold leading-tight mb-6 brand-gradient-text">就用 LLM Gateway</h1>
+          <h1 className="text-4xl font-extrabold text-white leading-tight mb-2">一个网关</h1>
+          <h1 className="text-4xl font-extrabold leading-tight mb-6 brand-gradient-text">连通所有大模型</h1>
           <p className="text-sm leading-relaxed" style={{ color: "rgba(196,181,253,0.8)" }}>
-            原生 Anthropic API，完整支持 Prompt Cache 和<br />Extended Thinking，比官方便宜 70%。
+            国内外主流模型统一接入，原生协议透传，<br />按量计费，故障自动切换。
           </p>
         </div>
 
         {/* Stats */}
         <div className="relative z-10 flex gap-8">
           {[
-            { value: "原生 API", label: "Messages API 透传" },
-            { value: "Cache", label: "5min / 1h TTL" },
-            { value: "比官方省70%", label: "支付宝直充" },
+            { value: "多协议透传", label: "OpenAI / Anthropic / Gemini" },
+            { value: "自动故障切换", label: "多上游负载均衡" },
+            { value: "支付宝直充", label: "按量计费 · 可开发票" },
           ].map((s) => (
             <div key={s.label} className="px-4 py-3 rounded-xl" style={{ background: "rgba(255,255,255,0.06)" }}>
               <div className="text-lg font-bold text-white">{s.value}</div>

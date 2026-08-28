@@ -20,19 +20,19 @@ const LandingHero = () => {
         <div className="text-center max-w-3xl mx-auto slide-up">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 border border-white/15 text-indigo-100 text-sm font-medium mb-6 backdrop-blur-sm">
             <Sparkles size={16} />
-            国内直连 · 支付宝充值 · 可开发票
+            支付宝充值 · 可开发票 · 国内直连低延迟
           </div>
 
           <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight tracking-tight">
-            在国内，稳定用上
+            一个网关，调用
             <br />
             <span className="text-transparent bg-clip-text" style={{ backgroundImage: "linear-gradient(135deg, #A5B4FC, #C4B5FD)" }}>
-              Claude、GPT、Gemini
+              所有大模型
             </span>
           </h1>
 
           <p className="text-lg md:text-xl text-slate-300 mb-10 leading-relaxed">
-            原生兼容 Claude Code、Cursor、Codex CLI，替换 BASE_URL 即可使用。
+            国内外主流模型统一接入。原生兼容 Claude Code、Cursor、Codex CLI，替换 BASE_URL 即可使用。
             <br className="hidden md:block" />
             按量计费，故障自动切换，每一笔调用都有可查账单。
           </p>
