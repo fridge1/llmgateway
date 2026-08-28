@@ -1,0 +1,61 @@
+# Docker Compose 部署配置
+# 所有密钥通过环境变量注入 — 在 .env 文件中设置对应变量即可
+#
+# 快速开始:
+#   1. cp .env.example .env   # 然后填入你的 API Key 和密钥
+#   2. docker compose up -d
+
+server:
+  port: 9090
+  auth_tokens:
+    - "${AUTH_TOKEN}"
+  admin_token: "${ADMIN_TOKEN}"
+  request_timeout: 30m
+  max_request_body_bytes: 20971520  # 20MB
+  shutdown_timeout: 30s
+  log_level: "info"
+  cors_origins: []
+
+# 模型配置完全由数据库管理，通过 Admin 后台增删改查
+# 首次部署后，请在 Admin 后台添加模型和 upstream
+
+circuit_breaker:
+  failure_threshold: 5
+  recovery_timeout: 30s
+  half_open_max_requests: 2
+
+database:
+  dsn: "postgres://gateway:${POSTGRES_PASSWORD}@postgres:5432/gateway?sslmode=disable"
+  max_open_conns: 50
+  max_idle_conns: 15
+  conn_max_lifetime: 5m
+
+# 首个注册用户自动成为管理员
+admin:
+  jwt_secret: "${JWT_SECRET}"
+
+sms:
+  provider: "volcengine"
+  access_key: "${SMS_ACCESS_KEY}"
+  secret_key: "${SMS_SECRET_KEY}"
+  sign_name: "${SMS_SIGN_NAME}"
+  sms_account: "${SMS_ACCOUNT}"
+  templates:
+    register:
+      id: "${SMS_TPL_REGISTER}"
+      param_key: "code"
+    login:
+      id: "${SMS_TPL_LOGIN}"
+      param_key: "code"
+    reset_password:
+      id: "${SMS_TPL_RESET}"
+      param_key: "msg_code"
+
+payment:
+  alipay:
+    app_id: "${ALIPAY_APP_ID}"
+    private_key_path: "certs/app_private_key.pem"
+    alipay_public_key_path: "certs/alipay_public_key.pem"
+    notify_url: "${ALIPAY_NOTIFY_URL}"
+    return_url: "${ALIPAY_RETURN_URL}"
+    is_production: false

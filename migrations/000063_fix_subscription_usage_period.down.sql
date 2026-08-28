@@ -1,0 +1,1 @@
+-- Down migration is a no-op: merging multiple month-periods into one is lossy and cannot be reversed.

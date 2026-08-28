@@ -1,0 +1,71 @@
+# 本地 Docker Compose 后端配置
+# 数据库指向 Docker 内部 PostgreSQL 容器
+# 密钥通过环境变量注入，可安全提交到代码仓库
+
+server:
+  port: 9090
+  auth_tokens:
+    - "${AUTH_TOKEN}"
+  admin_token: "${ADMIN_TOKEN}"
+  request_timeout: 30m
+  max_request_body_bytes: 20971520  # 20MB
+  shutdown_timeout: 30s
+  log_level: "debug"
+  cors_origins: []
+
+circuit_breaker:
+  failure_threshold: 5
+  recovery_timeout: 30s
+  half_open_max_requests: 2
+  # Retry configuration
+  max_retries: 3
+  retryable_status_codes:
+    - 429  # Rate Limit
+    - 502  # Bad Gateway
+    - 503  # Service Unavailable
+    - 504  # Gateway Timeout
+  retry_base_delay: 100ms
+  retry_max_delay: 5s
+
+database:
+  dsn: "postgres://gateway:${POSTGRES_PASSWORD}@postgres:5432/gateway?sslmode=disable"
+  max_open_conns: 20
+  max_idle_conns: 5
+  conn_max_lifetime: 5m
+
+admin:
+  jwt_secret: "${JWT_SECRET}"
+  init_token: "${ADMIN_INIT_TOKEN}"
+
+sms:
+  provider: "volcengine"
+  access_key: "${SMS_ACCESS_KEY}"
+  secret_key: "${SMS_SECRET_KEY}"
+  sign_name: "${SMS_SIGN_NAME}"
+  sms_account: "${SMS_ACCOUNT}"
+  templates:
+    login:
+      id: "${SMS_TPL_LOGIN}"
+      param_key: "code"
+    register:
+      id: "${SMS_TPL_REGISTER}"
+      param_key: "code"
+    reset_password:
+      id: "${SMS_TPL_RESET}"
+      param_key: "msg_code"
+
+payment:
+  alipay:
+    app_id: "${ALIPAY_APP_ID}"
+    private_key_path: "certs/app_private_key.pem"
+    alipay_public_key_path: "certs/alipay_public_key.pem"
+    notify_url: "${ALIPAY_NOTIFY_URL}"
+    return_url: "${ALIPAY_RETURN_URL}"
+    is_production: false
+
+promotion:
+  trial_credits_cny: 5.0
+  referral_inviter_bonus_cny: 3.0
+  referral_invitee_bonus_cny: 3.0
+  first_recharge_bonus_cny: 3.0
+  distributor_first_recharge_commission_cny: 2.0

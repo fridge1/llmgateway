@@ -1,0 +1,2 @@
+-- Irreversible drop. To restore, re-run migrations 000057, 000058, 000060
+-- or restore from a database backup.

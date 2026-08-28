@@ -1,0 +1,5 @@
+ALTER TABLE image_tasks ADD COLUMN IF NOT EXISTS tenant_id       VARCHAR(255);
+ALTER TABLE image_tasks ADD COLUMN IF NOT EXISTS tenant_key_id   VARCHAR(255);
+ALTER TABLE image_tasks ADD COLUMN IF NOT EXISTS sub_user_id     VARCHAR(255);
+ALTER TABLE image_tasks ADD COLUMN IF NOT EXISTS sub_user_key_id VARCHAR(255);
+ALTER TABLE image_tasks ADD COLUMN IF NOT EXISTS api_key_id      VARCHAR(255);

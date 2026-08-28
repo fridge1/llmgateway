@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2563EB"/>
+      <stop offset="100%" stop-color="#6366F1"/>
+    </linearGradient>
+  </defs>
+  <!-- Rounded square background -->
+  <rect width="32" height="32" rx="7" ry="7" fill="url(#bg)"/>
+  <!-- Lightning bolt (Zap icon) -->
+  <path d="M17.5 5L10 18h5.5l-1 9L22 14h-5.5l1-9z" fill="white" stroke="white" stroke-width="0.5" stroke-linejoin="round" stroke-linecap="round"/>
+</svg>

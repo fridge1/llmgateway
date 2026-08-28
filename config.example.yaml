@@ -1,0 +1,81 @@
+server:
+  port: 9090
+  auth_tokens:
+    - "sk-your-token-here"
+  admin_token: "your-admin-token"
+  request_timeout: 30m
+  max_request_body_bytes: 20971520  # 20MB
+  shutdown_timeout: 30s
+  log_level: "info"  # debug, info, warn, error
+  cors_origins: []   # empty = allow all ("*"); set specific origins for production
+  rate_limit:
+    requests_per_second: 0   # 0 = disabled; e.g. 10.0 for 10 req/s per IP
+    burst: 0                 # max burst size; 0 = auto (2x rps)
+    cleanup_interval: 1m
+  no_pricing_strategy: "reject"  # "reject" = block unpriced models, "warn" = allow + log, "allow" = silent pass
+
+# 模型配置完全由数据库管理，通过 Admin 后台增删改查
+# 首次部署后，请在 Admin 后台添加模型和 upstream
+
+circuit_breaker:
+  failure_threshold: 5
+  recovery_timeout: 30s
+  half_open_max_requests: 2
+
+# Supports env var expansion: dsn: "${DATABASE_URL}"
+database:
+  dsn: "postgres://gateway:change-me@localhost:5432/gateway?sslmode=disable"
+  max_open_conns: 50       # 0 = default (50)
+  max_idle_conns: 15       # 0 = default (15)
+  conn_max_lifetime: 5m    # 0 = default (5m)
+
+# The first registered user can become admin only by providing the correct init_token.
+# If init_token is empty, the first user will be a normal user.
+admin:
+  jwt_secret: "change-me-in-production"
+  init_token: "${ADMIN_INIT_TOKEN}"  # Required for first-user admin setup
+
+sms:
+  provider: "volcengine"
+  access_key: ""
+  secret_key: ""
+  sign_name: ""
+  templates:
+    register:
+      id: ""
+      param_key: "code"
+    login:
+      id: ""
+      param_key: "code"
+    reset_password:
+      id: ""
+      param_key: "code"
+    alert:                 # 运维告警短信模板（单变量：告警名称）
+      id: ""
+      param_key: "name"
+
+# Alipay payment. Set notify_url/return_url to your public HTTPS origin.
+# 手机浏览器自动使用 WAP 支付 (TradeWapPay)，PC 浏览器使用网页支付 (TradePagePay)。
+payment:
+  alipay:
+    app_id: ""
+    private_key_path: "certs/app_private_key.pem"
+    alipay_public_key_path: "certs/alipay_public_key.pem"
+    notify_url: "https://example.com/api/payment/alipay/notify"
+    return_url: "https://example.com/balance"
+    quit_url: "https://example.com/balance"   # WAP 支付取消跳转（可选，默认同 return_url）
+    is_production: false
+
+promotion:
+  trial_credits_cny: 5.0    # 新用户注册赠送金额（CNY），0 表示不赠送
+  referral_inviter_bonus_cny: 3.0  # 邀请人奖励（被邀请人首充后，CNY），0 表示不启用
+  referral_invitee_bonus_cny: 3.0  # 被邀请人奖励（首充时，CNY），0 表示不启用
+  first_recharge_bonus_cny: 3.0  # 首次充值赠送金额（CNY），0 表示不赠送
+  distributor_first_recharge_commission_cny: 2.0  # 经销商邀请用户首充佣金（CNY），0 表示不启用
+
+# 运维告警：上游熔断/结算失败/DB 异常时通知管理员。
+# 阈值/冷却规则存 alert_rules 表，通过管理后台「运维告警」页配置。
+alerting:
+  enabled: true
+  check_interval: 1m
+  admin_phones: []   # 为空则短信发给所有 admin 用户

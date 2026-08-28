@@ -1,0 +1,128 @@
+# Docker Compose 部署配置
+# 所有密钥通过环境变量注入，可安全提交到代码仓库
+# 在 docker-compose.yml 的 environment 或 .env 文件中设置对应变量
+
+server:
+  port: 9090
+  auth_tokens:
+    - "${AUTH_TOKEN}"
+  admin_token: "${ADMIN_TOKEN}"
+  request_timeout: 30m
+  max_request_body_bytes: 52428800  # 50MB
+  shutdown_timeout: 30s
+  log_level: "info"
+  cors_origins: []
+  image_bandwidth:
+    max_concurrent: 10
+    queue_timeout: 10m
+  image_upstream_max_concurrency: ${IMAGE_UPSTREAM_MAX_CONCURRENCY}
+  # DDoS 防护：应用层限流配置（已禁用）
+  rate_limit:
+    requests_per_second: 0      # 每个 IP 每秒请求数（0 = 禁用）
+    burst: 0                    # IP 维度突发容量
+    per_user_rps: 0             # 每个已认证用户每秒请求数（0 = 禁用）
+    per_user_burst: 0           # 用户维度突发容量
+    per_key_rps: 0              # 每个 API Key 每秒请求数（0 = 禁用）
+    per_key_burst: 0            # API Key 维度突发容量
+    cleanup_interval: 1m        # 限流器清理间隔
+
+# 模型配置已完全由数据库管理，通过 Admin 后台增删改查
+# models 段已移除，启动时直接从 DB 加载
+
+circuit_breaker:
+  failure_threshold: 5
+  recovery_timeout: 30s
+  half_open_max_requests: 2
+  # Retry configuration
+  max_retries: 3
+  retryable_status_codes:
+    # 429 已移除 - Cloudflare 速率限制不应重试，直接返回给用户
+    - 502  # Bad Gateway
+    - 503  # Service Unavailable
+    - 504  # Gateway Timeout
+  retry_base_delay: 100ms
+  retry_max_delay: 5s
+
+database:
+  dsn: "postgres://gateway:${POSTGRES_PASSWORD}@${DB_HOST}:5432/gateway?sslmode=disable"
+  max_open_conns: 20   # DDoS 防护：降低数据库连接池上限
+  max_idle_conns: 5    # DDoS 防护：降低空闲连接数
+  conn_max_lifetime: 5m
+
+admin:
+  jwt_secret: "${JWT_SECRET}"
+  init_token: "${ADMIN_INIT_TOKEN}"
+
+sms:
+  provider: "volcengine"
+  access_key: "${SMS_ACCESS_KEY}"
+  secret_key: "${SMS_SECRET_KEY}"
+  sign_name: "${SMS_SIGN_NAME}"
+  sms_account: "${SMS_ACCOUNT}"
+  templates:
+    login:
+      id: "${SMS_TPL_LOGIN}"
+      param_key: "code"
+    register:
+      id: "${SMS_TPL_REGISTER}"
+      param_key: "code"
+    reset_password:
+      id: "${SMS_TPL_RESET}"
+      param_key: "msg_code"
+    alert:                     # 运维告警/通知外推短信模板（可留空禁用短信通道）
+      id: "${SMS_TPL_ALERT}"
+      param_key: "name"
+
+email:
+  provider: "aliyun"
+  access_key: "${EMAIL_ACCESS_KEY}"
+  secret_key: "${EMAIL_SECRET_KEY}"
+  region: "${EMAIL_REGION}"
+  from_email: "${EMAIL_FROM}"
+  from_name: "${EMAIL_FROM_NAME}"
+  templates:
+    register:
+      subject: "验证您的邮箱 - LLM Gateway"
+      template_id: "${EMAIL_TPL_REGISTER}"
+      param_key: "code"
+    reset_password:
+      subject: "重置密码验证码"
+      template_id: "${EMAIL_TPL_RESET}"
+      param_key: "code"
+
+payment:
+  alipay:
+    app_id: "${ALIPAY_APP_ID}"
+    private_key_path: "certs/app_private_key.pem"
+    alipay_public_key_path: "certs/alipay_public_key.pem"
+    notify_url: "${ALIPAY_NOTIFY_URL}"
+    return_url: "${ALIPAY_RETURN_URL}"
+    is_production: ${ALIPAY_IS_PRODUCTION}
+
+promotion:
+  trial_credits_cny: 5.0
+  referral_inviter_bonus_cny: 3.0  # 邀请人奖励（被邀请人首充后）
+  referral_invitee_bonus_cny: 3.0  # 被邀请人奖励（首充时）
+  first_recharge_bonus_cny: 0.0    # 首充赠送比例（0 = 已关闭；曾用 1.0 = 100%，充多少送多少）
+  distributor_first_recharge_commission_cny: 2.0
+
+retention:
+  balance_alert_threshold_cny: 1.0
+  weekly_report_enabled: false
+  winback_enabled: false
+  checkin_base_reward_cny: 0.10
+
+# 运维告警：阈值/冷却规则存 alert_rules 表，管理后台可改。
+alerting:
+  enabled: true
+  check_interval: 1m
+  admin_phones: []   # 为空则短信发给所有 admin 用户
+
+# TOS (对象存储) 配置 - 用于图片生成功能
+tos:
+  endpoint: "tos-cn-beijing.volces.com"
+  region: "cn-beijing"
+  bucket: "${TOS_BUCKET}"
+  access_key: "${TOS_ACCESS_KEY}"
+  secret_key: "${TOS_SECRET_KEY}"
+  url_prefix: "${TOS_URL_PREFIX}"

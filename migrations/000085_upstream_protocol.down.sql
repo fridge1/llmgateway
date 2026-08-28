@@ -1,0 +1,1 @@
+ALTER TABLE upstreams DROP COLUMN IF EXISTS protocol;

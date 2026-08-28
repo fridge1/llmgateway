@@ -1,0 +1,63 @@
+# Binaries
+/llm-gateway
+/gateway
+bin/
+*.exe
+
+# IDE
+.idea/
+.vscode/
+
+# OS
+.DS_Store
+
+# Web UI
+web/node_modules/
+web/dist/
+
+# Config with secrets — never commit real instance configs.
+# Use config.example.yaml / config.docker.example.yaml / config.docker.yaml (env-var placeholders) as templates.
+config.yaml
+config.local.yaml
+.env
+.env.local
+
+# Certificates / payment keys (支付宝证书) — never commit real keys.
+certs/
+
+# Internal / deployment reports with credentials — not for public release.
+DEPLOYMENT_REPORT*.md
+*部署指南*.md
+refund_*.sql
+test-tenant-feature.sh
+
+# Superpowers
+.superpowers/
+
+# Claude Code
+.claude/
+
+# Worktrees
+.worktrees/
+
+# Debug/build artifacts
+cursor.md
+.playwright-mcp/
+desktop/.vite/
+__pycache__/
+
+# Binary documents
+*.docx
+*.xlsx
+*.pptx
+
+# Images dropped in repo root (test assets, screenshots, etc.)
+/*.jpg
+/*.jpeg
+/*.png
+/*.gif
+
+# Business / marketing documents (not part of codebase)
+docs/business-plan*.md
+商业计划书*.md
+*商业计划书*

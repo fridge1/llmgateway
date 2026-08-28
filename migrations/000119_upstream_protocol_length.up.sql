@@ -1,0 +1,1 @@
+ALTER TABLE upstreams ALTER COLUMN protocol TYPE VARCHAR(30);

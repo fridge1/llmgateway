@@ -1,0 +1,1 @@
+ALTER TABLE users ADD COLUMN IF NOT EXISTS first_recharge_bonus_granted BOOLEAN NOT NULL DEFAULT FALSE;

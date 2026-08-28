@@ -1,0 +1,85 @@
+# 本地开发 Docker Compose - 自包含所有服务（含 PostgreSQL）
+# 与生产环境 docker-compose.yml 完全独立，互不干扰
+#
+# 零配置启动:
+#   docker compose -f docker-compose.local.yml up --build -d
+#
+# 自定义配置:
+#   cp .env.local.example .env.local && 编辑后:
+#   docker compose -f docker-compose.local.yml --env-file .env.local up --build -d
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: llm-gateway-local-postgres
+    environment:
+      POSTGRES_USER: gateway
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-change-me}
+      POSTGRES_DB: gateway
+    volumes:
+      - pgdata_local:/var/lib/postgresql/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U gateway -d gateway"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  backend:
+    build: .
+    container_name: llm-gateway-local-backend
+    environment:
+      - JWT_SECRET=${JWT_SECRET:-local-dev-jwt-secret}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-change-me}
+      - AUTH_TOKEN=${AUTH_TOKEN:-sk-your-local-token}
+      - ADMIN_TOKEN=${ADMIN_TOKEN:-your-local-admin-token}
+      - ADMIN_INIT_TOKEN=${ADMIN_INIT_TOKEN:-your-init-token}
+      - SMS_ACCESS_KEY=${SMS_ACCESS_KEY:-}
+      - SMS_SECRET_KEY=${SMS_SECRET_KEY:-}
+      - SMS_SIGN_NAME=${SMS_SIGN_NAME:-}
+      - SMS_ACCOUNT=${SMS_ACCOUNT:-}
+      - SMS_TPL_LOGIN=${SMS_TPL_LOGIN:-}
+      - SMS_TPL_REGISTER=${SMS_TPL_REGISTER:-}
+      - SMS_TPL_RESET=${SMS_TPL_RESET:-}
+      - ALIPAY_APP_ID=${ALIPAY_APP_ID:-}
+      - ALIPAY_NOTIFY_URL=${ALIPAY_NOTIFY_URL:-http://localhost:3000/api/payment/alipay/notify}
+      - ALIPAY_RETURN_URL=${ALIPAY_RETURN_URL:-http://localhost:3000/balance}
+      - ALIPAY_IS_PRODUCTION=${ALIPAY_IS_PRODUCTION:-false}
+    volumes:
+      - ./config.docker.local.yaml:/app/config.yaml:ro
+      - ./certs:/app/certs:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:9090/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+
+  web:
+    build:
+      context: ./web
+      dockerfile: Dockerfile.local
+    container_name: llm-gateway-local-web
+    ports:
+      - "3000:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://0.0.0.0:80/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+volumes:
+  pgdata_local:
+
+networks:
+  default:
+    name: llm-gateway-local

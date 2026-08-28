@@ -1,0 +1,13 @@
+.git
+web/
+docs/
+!docs/openapi.yaml
+certs/
+# config.yaml
+# config.docker.yaml
+gateway
+*.exe
+.DS_Store
+.idea/
+.vscode/
+.superpowers/

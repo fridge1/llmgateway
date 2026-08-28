@@ -1,0 +1,249 @@
+@import "tailwindcss";
+@import "@fontsource-variable/plus-jakarta-sans";
+@import "@fontsource-variable/jetbrains-mono";
+
+/* ── Design Tokens (Tailwind CSS 4) ── */
+
+@theme {
+  /* Obsidian color scale */
+  --color-obsidian-950: #0a0a0f;
+  --color-obsidian-900: #111118;
+  --color-obsidian-850: #16161f;
+  --color-obsidian-800: #1c1c27;
+  --color-obsidian-700: #2a2a38;
+  --color-obsidian-600: #3a3a4a;
+  --color-obsidian-400: #8888a0;
+  --color-obsidian-200: #c8c8d8;
+  --color-obsidian-100: #e8e8f0;
+  --color-obsidian-50: #f0f0f8;
+
+  /* Shadows */
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-card-hover: 0 4px 12px rgba(0, 0, 0, 0.5), 0 2px 4px rgba(0, 0, 0, 0.3);
+  --shadow-glow-amber: 0 0 20px rgba(245, 158, 11, 0.15);
+
+  /* Fonts */
+  --font-sans: 'Plus Jakarta Sans Variable', 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono Variable', 'JetBrains Mono', 'Fira Code', monospace;
+}
+
+/* ── CSS Variables for shadcn/ui compatibility ── */
+
+:root {
+  --background: #0a0a0f;
+  --foreground: #f0f0f8;
+  --card: #111118;
+  --card-foreground: #f0f0f8;
+  --popover: #111118;
+  --popover-foreground: #f0f0f8;
+  --primary: #f59e0b;
+  --primary-foreground: #0a0a0f;
+  --secondary: #1c1c27;
+  --secondary-foreground: #f0f0f8;
+  --muted: #1c1c27;
+  --muted-foreground: #8888a0;
+  --accent: #2a2a38;
+  --accent-foreground: #f0f0f8;
+  --destructive: #ef4444;
+  --destructive-foreground: #f0f0f8;
+  --border: #2a2a38;
+  --input: #2a2a38;
+  --ring: #f59e0b;
+  --radius: 0.5rem;
+}
+
+/* ── Global Base Styles ── */
+
+body {
+  font-family: var(--font-sans);
+  background: var(--color-obsidian-950);
+  color: var(--color-obsidian-200);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Noise Texture Overlay ── */
+
+.bg-noise::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  z-index: 0;
+}
+
+/* ── Scrollbar Styling ── */
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-obsidian-700);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-obsidian-600);
+}
+
+/* ── Animation Keyframes ── */
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes pulse-subtle {
+  0%, 100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 1.5s linear infinite;
+  background-size: 200% 100%;
+  background-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--color-obsidian-700) 50%,
+    transparent 100%
+  );
+}
+
+.animate-pulse-subtle {
+  animation: pulse-subtle 2s ease-in-out infinite;
+}
+
+.animate-fade-in {
+  animation: fade-in 0.2s ease-out;
+}
+
+/* ── Rendered Markdown (replaces @tailwindcss/typography prose) ── */
+
+.md-body {
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--color-obsidian-100);
+  word-break: break-word;
+}
+
+.md-body > :first-child {
+  margin-top: 0;
+}
+
+.md-body > :last-child {
+  margin-bottom: 0;
+}
+
+.md-body p {
+  margin: 0.5rem 0;
+}
+
+.md-body h1,
+.md-body h2,
+.md-body h3,
+.md-body h4 {
+  margin: 1rem 0 0.5rem;
+  font-weight: 600;
+  color: var(--color-obsidian-50);
+  line-height: 1.3;
+}
+
+.md-body h1 { font-size: 1.25rem; }
+.md-body h2 { font-size: 1.125rem; }
+.md-body h3 { font-size: 1rem; }
+
+.md-body ul,
+.md-body ol {
+  margin: 0.5rem 0;
+  padding-left: 1.5rem;
+}
+
+.md-body ul { list-style: disc; }
+.md-body ol { list-style: decimal; }
+.md-body li { margin: 0.25rem 0; }
+
+.md-body a {
+  color: #f59e0b;
+  text-decoration: underline;
+}
+
+.md-body blockquote {
+  margin: 0.5rem 0;
+  padding-left: 0.75rem;
+  border-left: 3px solid var(--color-obsidian-700);
+  color: var(--color-obsidian-400);
+}
+
+.md-body code {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  background: var(--color-obsidian-800);
+  color: var(--color-obsidian-100);
+  padding: 0.1rem 0.3rem;
+  border-radius: 0.25rem;
+}
+
+.md-body pre {
+  margin: 0.5rem 0;
+  padding: 0.75rem;
+  background: var(--color-obsidian-800);
+  border-radius: 0.5rem;
+  overflow-x: auto;
+}
+
+.md-body pre code {
+  background: transparent;
+  padding: 0;
+  font-size: 0.8125rem;
+  color: var(--color-obsidian-100);
+}
+
+.md-body table {
+  border-collapse: collapse;
+  margin: 0.5rem 0;
+  width: 100%;
+  font-size: 0.8125rem;
+}
+
+.md-body th,
+.md-body td {
+  border: 1px solid var(--color-obsidian-700);
+  padding: 0.375rem 0.625rem;
+  text-align: left;
+}
+
+.md-body th {
+  background: var(--color-obsidian-800);
+  font-weight: 600;
+}
+
+.md-body hr {
+  margin: 0.75rem 0;
+  border: 0;
+  border-top: 1px solid var(--color-obsidian-700);
+}

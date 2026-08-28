@@ -1,0 +1,16 @@
+User-agent: *
+Allow: /
+Disallow: /login
+Disallow: /auth
+Disallow: /image-login
+Disallow: /onboarding
+Disallow: /dashboard
+Disallow: /admin
+Disallow: /tools/
+Disallow: /org
+Disallow: /api/
+Disallow: /v1/
+Disallow: /v3/
+Disallow: /gemini/
+
+Sitemap: https://your-domain.com/sitemap.xml

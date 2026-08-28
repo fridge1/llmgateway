@@ -1,0 +1,20 @@
+{
+  "routes": [
+    {
+      "path": "/",
+      "src": "src/pages/Index.tsx"
+    }
+  ],
+  "components": [
+    { "name": "Navbar", "src": "src/components/Navbar.tsx" },
+    { "name": "DashboardPage", "src": "src/pages/DashboardPage.tsx" },
+    { "name": "AuthPage", "src": "src/pages/AuthPage.tsx" },
+    { "name": "ApiKeysPage", "src": "src/pages/ApiKeysPage.tsx" },
+    { "name": "ModelsPage", "src": "src/pages/ModelsPage.tsx" },
+    { "name": "PlaygroundPage", "src": "src/pages/PlaygroundPage.tsx" },
+    { "name": "BalancePage", "src": "src/pages/BalancePage.tsx" },
+    { "name": "TransactionsPage", "src": "src/pages/TransactionsPage.tsx" },
+    { "name": "OrdersPage", "src": "src/pages/OrdersPage.tsx" },
+    { "name": "DocsPage", "src": "src/pages/DocsPage.tsx" }
+  ]
+}

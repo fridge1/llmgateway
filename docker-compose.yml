@@ -1,0 +1,76 @@
+services:
+  backend:
+    build: .
+    container_name: llm-gateway
+    # 9090 不对外暴露，所有流量经 web (nginx) 转发
+    # 如需直连调试可取消下行注释
+    # ports:
+    #   - "9090:9090"
+    environment:
+      - JWT_SECRET=${JWT_SECRET}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - AUTH_TOKEN=${AUTH_TOKEN}
+      - ADMIN_TOKEN=${ADMIN_TOKEN}
+      - SMS_ACCESS_KEY=${SMS_ACCESS_KEY}
+      - SMS_SECRET_KEY=${SMS_SECRET_KEY}
+      - SMS_SIGN_NAME=${SMS_SIGN_NAME}
+      - SMS_ACCOUNT=${SMS_ACCOUNT}
+      - SMS_TPL_LOGIN=${SMS_TPL_LOGIN}
+      - SMS_TPL_REGISTER=${SMS_TPL_REGISTER}
+      - SMS_TPL_RESET=${SMS_TPL_RESET}
+      - SMS_TPL_ALERT=${SMS_TPL_ALERT:-}
+      - EMAIL_ACCESS_KEY=${EMAIL_ACCESS_KEY}
+      - EMAIL_SECRET_KEY=${EMAIL_SECRET_KEY}
+      - EMAIL_REGION=${EMAIL_REGION}
+      - EMAIL_FROM=${EMAIL_FROM}
+      - EMAIL_FROM_NAME=${EMAIL_FROM_NAME}
+      - EMAIL_TPL_REGISTER=${EMAIL_TPL_REGISTER}
+      - EMAIL_TPL_RESET=${EMAIL_TPL_RESET}
+      - ALIPAY_APP_ID=${ALIPAY_APP_ID}
+      - ALIPAY_NOTIFY_URL=${ALIPAY_NOTIFY_URL}
+      - ALIPAY_RETURN_URL=${ALIPAY_RETURN_URL}
+      - ALIPAY_IS_PRODUCTION=${ALIPAY_IS_PRODUCTION}
+      - IMAGE_UPSTREAM_MAX_CONCURRENCY=${IMAGE_UPSTREAM_MAX_CONCURRENCY:-32}
+      - GW_DEBUG_TRACE=${GW_DEBUG_TRACE:-}
+    volumes:
+      - ./config.docker.yaml:/app/config.yaml:ro
+      - ./certs:/app/certs:ro
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:9090/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    deploy:
+      resources:
+        limits:
+          memory: 4g
+          cpus: "4"
+        reservations:
+          memory: 1g
+          cpus: "1"
+
+  web:
+    build: ./web
+    container_name: llm-gateway-web
+    ports:
+      - "80:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://0.0.0.0:80/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    deploy:
+      resources:
+        limits:
+          memory: 2g
+          cpus: "2"
+        reservations:
+          memory: 512m
+          cpus: "0.5"

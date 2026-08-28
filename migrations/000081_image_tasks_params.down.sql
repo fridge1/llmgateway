@@ -1,0 +1,1 @@
+ALTER TABLE image_tasks DROP COLUMN IF EXISTS params;

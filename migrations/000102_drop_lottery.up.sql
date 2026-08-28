@@ -1,0 +1,3 @@
+DROP TABLE IF EXISTS lottery_records CASCADE;
+DROP TABLE IF EXISTS lottery_prizes CASCADE;
+DROP TABLE IF EXISTS lottery_events CASCADE;

@@ -1,0 +1,1 @@
+-- 数据修复不可逆，down migration 为 no-op

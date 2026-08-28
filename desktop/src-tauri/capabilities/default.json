@@ -1,0 +1,39 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "default",
+  "description": "default permissions",
+  "windows": ["main"],
+  "permissions": [
+    "core:default",
+    "shell:allow-execute",
+    "shell:allow-open",
+    "notification:default",
+    "notification:allow-notify",
+    "notification:allow-is-permission-granted",
+    "notification:allow-request-permission",
+    {
+      "identifier": "opener:allow-open-url",
+      "allow": [
+        { "url": "https://**" }
+      ]
+    },
+    {
+      "identifier": "fs:allow-read-text-file",
+      "allow": [
+        { "path": "$HOME/.zshrc" },
+        { "path": "$HOME/.bashrc" },
+        { "path": "$HOME/.openclaw/**" },
+        { "path": "$HOME/.hermes/**" }
+      ]
+    },
+    {
+      "identifier": "fs:allow-write-text-file",
+      "allow": [
+        { "path": "$HOME/.zshrc" },
+        { "path": "$HOME/.bashrc" },
+        { "path": "$HOME/.openclaw/**" },
+        { "path": "$HOME/.hermes/**" }
+      ]
+    }
+  ]
+}
