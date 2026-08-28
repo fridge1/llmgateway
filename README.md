@@ -1,3 +1,5 @@
+[English](README.en.md) | 简体中文
+
 # LLM Gateway
 
 LLM Gateway 是一个统一的大模型 API 网关与商业化运营平台。它把 OpenAI、Anthropic、Google Gemini 等协议入口汇聚到同一套认证、路由、计费、订阅、租户和管理后台中，让 Claude Code、Codex CLI、Cursor、Windsurf、Aider 等主流 AI 编码工具用同一个网关地址和 API Key 即可访问已配置的全部模型。
